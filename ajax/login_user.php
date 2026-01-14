@@ -1,6 +1,22 @@
 <?php
 	session_start();
 	include("../settings/connect_datebase.php");
+	include("../recaptcha/autoload.php");
+	
+	$secret = '6LdvNEosAAAAAJEYP9nmgmhdaQwETDg61LXxKlvp';
+
+	if (isset($_POST['g-recaptcha-response'])) {
+		$recaptcha = new \ReCaptcha\ReCaptcha($secret);
+		$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+
+		if ($resp -> isSuccess()) {
+			echo 'Регистрация прошла успешно';
+		} else {
+			echo 'Пользователь не распознан';
+		}
+	} else {
+		echo 'Нет ответа от ReCaptcha';
+	}
 	
 	$login = $_POST['login'];
 	$password = $_POST['password'];
