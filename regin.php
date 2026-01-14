@@ -62,6 +62,14 @@
 		</div>
 		
 		<script>
+			var captcha = grecaptcha.getResponse();
+			if (captcha.length) {
+				let Data = new FormData();
+				Data.append('g-recaptcha-Response', captcha);
+	
+				Ajax("url", Data, SignIn)
+			}
+			
 			var loading = document.getElementsByClassName("loading")[0];
 			var button = document.getElementsByClassName("button")[0];
 			
@@ -131,7 +139,7 @@
 					}
 				}
 			}
-			
+
 		</script>
 	</body>
 </html>
