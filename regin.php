@@ -62,21 +62,20 @@
 		</div>
 		
 		<script>
-			var captcha = grecaptcha.getResponse();
-			if (captcha.length) {
-				let Data = new FormData();
-				Data.append('g-recaptcha-Response', captcha);
-	
-				Ajax("url", Data, SignIn)
-			}
-			
 			var loading = document.getElementsByClassName("loading")[0];
 			var button = document.getElementsByClassName("button")[0];
+
 			
 			function RegIn() {
 				var _login = document.getElementsByName("_login")[0].value;
 				var _password = document.getElementsByName("_password")[0].value;
 				var _passwordCopy = document.getElementsByName("_passwordCopy")[0].value;
+				
+				var captcha = grecaptcha.getResponse();
+				if (captcha.length == 0) {
+					alert('вы не прошли каптчу');
+					return;
+				}
 				
 				if(_login != "") {
 					if(_password != "") {
@@ -87,6 +86,8 @@
 							var data = new FormData();
 							data.append("login", _login);
 							data.append("password", _password);
+							data.append("g-recaptcha-response", captcha);
+							
 							
 							// AJAX запрос
 							$.ajax({
